@@ -5,10 +5,20 @@ import SearchIcon from '@material-ui/icons/Search';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble'; 
 import {db} from './firebase';
 import Chat from './Chat';
+import {useSelector} from "react-redux";
+import {selectuser} from './features/appSlice';
+import {auth} from './firebase';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import {useDispatch} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {resetCamaraImage} from './features/camaraSlice';
 
 function Chats() {
 
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [posts, setPosts] = useState([]);
+    const user = useSelector(selectuser);
 
     useEffect(() => {
        
@@ -18,14 +28,20 @@ function Chats() {
                 id:doc.id,
                 data:doc.data(),
             }))))
+            
     }, [])
 
+    const takesnap = () =>{
+
+        dispatch(resetCamaraImage());
+        history.push('/')
+    }
 
     return (
         <div className="chats">
-            <div     className="chats_header">
+            <div className="chats_header">
 
-                <Avatar className="chats_avatar" />
+                <Avatar src={user?.profilePic} onClick={()=>{auth.signOut()}} className="chats_avatar" />
 
                 <div className="chat_search">
 
@@ -49,6 +65,7 @@ function Chats() {
                     <Chat 
 
                     key={id}
+                    id={id}
                     username={username}
                     timestamp={timestamp}
                     imageUrl={imageUrl}
@@ -60,6 +77,14 @@ function Chats() {
                 }
 
             </div>
+
+        <RadioButtonCheckedIcon
+        
+        className="takePic"
+        onClick={takesnap}
+        fontSize='large'
+        />
+
         </div>
     )
 }

@@ -22,11 +22,14 @@ function ChatView() {
     }
 
     return (
-        <div className="chatview">
+        
+<div className="chatview">
             
             <img src={selectedImage} onClick={exit} alt=""/>
 
-            <CountdownCircleTimer
+    <div className="chatview_timer">
+        
+         <CountdownCircleTimer
 
              isPlaying
              duration={10}
@@ -38,12 +41,20 @@ function ChatView() {
                 ['#A30000', 0.33],
               ]}
             >
-                {({ remainingTime }) => remainingTime}
+                {({ remainingTime }) => {
+
+                    if(remainingTime===0){
+                        exit();
+                    }
+                  return  remainingTime
+                    
+                    }}
                 
             </CountdownCircleTimer>
 
-
-        </div>
+    </div>
+            
+</div>
     )
 }
 

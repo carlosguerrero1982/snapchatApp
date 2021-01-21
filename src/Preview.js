@@ -17,9 +17,11 @@ import SendIcon from '@material-ui/icons/Send';
 import {v4 as uuid} from "uuid";
 import {storage,db} from './firebase';
 import firebase from "firebase";
+import {selectuser} from './features/appSlice';
 
 function Preview() {
 
+    const user = useSelector(selectuser);
      const camaraImage = useSelector(selectCamaraImage);
      const dispatch = useDispatch();
       const history = useHistory();
@@ -55,9 +57,9 @@ const sendPost = () =>{
 
             db.collection('posts').add({
                 imageUrl:url,
-                username:'Carlos Guerrero',
+                username: user.username,
                 read:false,
-              //  profilePic
+                profilePic:user.profilePic,
               timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             });
             history.replace('/chats');
